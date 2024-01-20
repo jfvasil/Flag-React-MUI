@@ -11,35 +11,55 @@ import { useEffect,useState, useCallback } from 'react'
 
 const Landing = () => {
 
+    const wikiURL = 'https://en.wikipedia.org/wiki/'
+
     const [flag, setFlag] = useState(null)
     const [countryName, setCountryName] = useState('')
     const [countryInfo, setCountryInfo] = useState([])
+
+    const getTodaysDate = () => {
+        const today = new Date()
+        return `${today.getFullYear()} - ${today.getMonth() + 1} - ${today.getDay()}`
+    }
+
+
     
 
-    let wikiURL = 'https://en.wikipedia.org/wiki/'
-
+   
+   
     const handleFetch = useCallback(async () => {
 
+       const lastVisitedDate = localStorage.getItem('lastVisitedDate')
+        const currentDate = getTodaysDate()
+
+        if(currentDate != lastVisitedDate){
+
         try{
-        const res = await axios.get('https://restcountries.com/v3.1/name/deutschland')
+        const res = await axios.get('https://restcountries.com/v3.1/all')
 
-        console.log(res.data[0])
+        const randomCountry = res.data[Math.floor(Math.random() * res.data.length)]
 
-        const data = res.data[0]
+        console.log(res.data)
+
+        const data = randomCountry
         const infoArray = [data.capital, data.population,data.continents, data.languages.deu]
 
         setFlag(data.flags.png)
         setCountryInfo( [...infoArray])
-        setCountryName(res.data[0].name.common)
+        setCountryName(data.name.common)
     }catch(err){
         console.error(err)
     }
+    }
+    localStorage.setItem('lastVistitedDate', currentDate)
     })
-  
 
-   useEffect(() => {
-    handleFetch()
-   },[])
+    useEffect(() => {
+        handleFetch()
+    },[])
+
+
+
 
         return (
             <>
@@ -65,12 +85,12 @@ const Landing = () => {
                 <Box>
                     <Typography
                     variant='h3' component='h3'>
-                    {countryName}!
+                    {countryName}
                     </Typography>
                     <Typography>
                        Capital: {countryInfo[0]}, Population: {countryInfo[1]}, Continent: {countryInfo[2]}, 
-                        Languages: {countryInfo[3]} 
-                         Find more info on: <a href={wikiURL + countryName}>Wikipedia</a>
+                        Languages: {countryInfo[3]}. 
+                          Find more info on: <a href={wikiURL + countryName}>Wikipedia</a>
                     </Typography>
                 </Box>
                 </Container>
