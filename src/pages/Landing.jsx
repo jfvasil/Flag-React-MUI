@@ -1,4 +1,5 @@
 import Header from '../components/Header'
+import  Rating  from '../components/Rating'
 import Typography from '@mui/material/Typography'
 import {Box, Container} from '@mui/material'
 import {Card, CardMedia, CardContent} from '@mui/material'
@@ -16,6 +17,8 @@ const Landing = () => {
     const [flag, setFlag] = useState(null)
     const [countryName, setCountryName] = useState('')
     const [countryInfo, setCountryInfo] = useState([])
+    const [timer,setTimer] = useState(0)
+    const [counter, setCounter] = useState(10)
 
     const getTodaysDate = () => {
         const today = new Date()
@@ -23,23 +26,31 @@ const Landing = () => {
     }
 
 
-    
+
+    useEffect(() => {
+        setTimeout(() =>  setTimer(timer + 1), 10000)
+        const countingDown = () => {
+        if(counter == 0){
+            setCounter(10)
+        }
+        setTimeout(() => setCounter(counter - 1), 1000 )
+        }
+        countingDown()
+    })
 
    
    
     const handleFetch = useCallback(async () => {
 
-       const lastVisitedDate = localStorage.getItem('lastVisitedDate')
-        const currentDate = getTodaysDate()
 
-        if(currentDate != lastVisitedDate){
+        if(counter == 0){
 
         try{
         const res = await axios.get('https://restcountries.com/v3.1/all')
 
         const randomCountry = res.data[Math.floor(Math.random() * res.data.length)]
 
-        console.log(res.data)
+        // console.log(res.data)
 
         const data = randomCountry
         const infoArray = [data.capital, data.population,data.continents, data.languages.deu]
@@ -50,13 +61,13 @@ const Landing = () => {
     }catch(err){
         console.error(err)
     }
-    }
-    localStorage.setItem('lastVistitedDate', currentDate)
-    })
+}
+    
+    },[counter])
 
     useEffect(() => {
         handleFetch()
-    },[])
+    },[counter])
 
 
 
@@ -90,9 +101,13 @@ const Landing = () => {
                     <Typography>
                        Capital: {countryInfo[0]}, Population: {countryInfo[1]}, Continent: {countryInfo[2]}, 
                         Languages: {countryInfo[3]}. 
-                          Find more info on: <a href={wikiURL + countryName}>Wikipedia</a>
+                          Find more info on: <a href={wikiURL + countryName} target='_blank'>Wikipedia</a>
+                    </Typography>
+                    <Typography>
+                       New Flag in: {counter}
                     </Typography>
                 </Box>
+                <Rating />
                 </Container>
             </Container>
             </>
