@@ -17,20 +17,16 @@ const Landing = () => {
     const [flag, setFlag] = useState(null)
     const [countryName, setCountryName] = useState('')
     const [countryInfo, setCountryInfo] = useState([])
-    const [timer,setTimer] = useState(0)
-    const [counter, setCounter] = useState(10)
+   
+    const [counter, setCounter] = useState(0)
 
-    const getTodaysDate = () => {
-        const today = new Date()
-        return `${today.getFullYear()} - ${today.getMonth() + 1} - ${today.getDay()}`
-    }
 
 
 
     useEffect(() => {
-        setTimeout(() =>  setTimer(timer + 1), 10000)
-        const countingDown = () => {
-        if(counter == 0){
+        
+        const countingDown = () => {                 
+        if(counter < 0){
             setCounter(10)
         }
         setTimeout(() => setCounter(counter - 1), 1000 )
@@ -63,7 +59,7 @@ const Landing = () => {
     }
 }
     
-    },[counter])
+    })
 
     useEffect(() => {
         handleFetch()
@@ -80,7 +76,7 @@ const Landing = () => {
                 sx={{display:'flex', justifyContent:'center', flexGrow:1}}>
                     <Typography
                         variant='h2' component='h2'>
-                        Flag of the Day
+                        Flag of the Moment
                     </Typography>
                 </Box>
                 <Container>
