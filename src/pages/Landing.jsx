@@ -14,7 +14,7 @@ import { useEffect,useState, useCallback } from 'react'
 
 const Landing = () => {
 
-    const wikiURL = 'https://en.wikipedia.org/wiki/'
+   
 
     const [flag, setFlag] = useState(null)
     const [countryName, setCountryName] = useState('')
@@ -48,7 +48,7 @@ const Landing = () => {
 
         const randomCountry = res.data[Math.floor(Math.random() * res.data.length)]
 
-         console.log(res.data)
+        
 
         const data = randomCountry
         const infoArray = [data.capital, data.population,data.continents, Object.values(data.languages).join(', ')]
@@ -68,15 +68,37 @@ const Landing = () => {
     },[counter])
 
 
-
-
+    
+const addCommas = (number) => {
+        if(!number){
+            return null
+        }
+        const string = number.toString()
+        const arr = string.split('')
+        const arrWithCommas = []
+        let j = 1
+        for(let i = arr.length - 1; i>=0;i--){
+            if(i === 0){
+                arrWithCommas.push(arr[i])
+            } else if(j == 3){
+                arrWithCommas.push(',' + arr[i])
+                j = 1
+            } else{
+                arrWithCommas.push(arr[i])
+                j++
+            }
+        }
+        return arrWithCommas.reverse().join('')
+    }
         return (
             <>
-                <Header />
+            {/* <Header /> */}
             <Grid contianer spacing={1.5}>
                 <Grid item sx={{display:'flex',justifyContent:'center'}}>
                     <Typography
-                        variant='h2' component='h2'>
+                        variant='h2' component='h2'
+                        sx={{textAlign:'center', color:'primary.main',
+                        mb:3}}>
                         Flag of the Moment
                     </Typography>
                 </Grid>
@@ -86,7 +108,8 @@ const Landing = () => {
                         maxWidth:600,
                         mx:'auto',
                         boxShadow:3,
-                        borderRadius:2
+                        borderRadius:2,
+                        overflow: 'hidden'
                     }}>
                         <motion.div 
                         key={flag}
@@ -99,22 +122,24 @@ const Landing = () => {
                             component='img'
                             src={flag}
                             alt='Flag'
-                            sx={{}}
+                            
                             />
                         </motion.div>
                     </Card>
                 </Grid>
-                <Grid container 
+                <Grid
+                container
                 direction='column'
                 alignItems='center'>
                     <InfoDisplay
                     capital={countryInfo[0]} 
-                    population={countryInfo[1]}
+                    population={addCommas(countryInfo[1])}
                     continent={countryInfo[2]}
                     languages={countryInfo[3]} 
                     name={countryName}/>
                     <Grid item sx={{paddingY:4}}>
-                    <Typography variant='h2' component='h3'>
+                    <Typography variant='h5' component='div'
+                    sx={{textAlign:'center', color:'secondary.main'}}>
                     New Flag in:
                     <motion.div 
                     initial={{opacity: 0, scale:0.8}}
