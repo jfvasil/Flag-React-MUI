@@ -1,7 +1,9 @@
+import {motion} from 'framer-motion'
 import Header from '../components/Header'
 import  Rating  from '../components/Rating'
+import InfoDisplay from '../components/InfoDisplay'
 import Typography from '@mui/material/Typography'
-import {Box, Container} from '@mui/material'
+import {Box, Container, Grid} from '@mui/material'
 import {Card, CardMedia, CardContent} from '@mui/material'
 import axios from 'axios'
 import { useEffect,useState, useCallback } from 'react'
@@ -26,7 +28,7 @@ const Landing = () => {
     useEffect(() => {
         
         const countingDown = () => {                 
-        if(counter < 0){
+        if(counter <= 0){
             setCounter(10)
         }
         setTimeout(() => setCounter(counter - 1), 1000 )
@@ -46,10 +48,10 @@ const Landing = () => {
 
         const randomCountry = res.data[Math.floor(Math.random() * res.data.length)]
 
-        // console.log(res.data)
+         console.log(res.data)
 
         const data = randomCountry
-        const infoArray = [data.capital, data.population,data.continents, data.languages.deu]
+        const infoArray = [data.capital, data.population,data.continents, Object.values(data.languages).join(', ')]
 
         setFlag(data.flags.png)
         setCountryInfo( [...infoArray])
@@ -59,7 +61,7 @@ const Landing = () => {
     }
 }
     
-    })
+    },[counter])
 
     useEffect(() => {
         handleFetch()
@@ -71,41 +73,61 @@ const Landing = () => {
         return (
             <>
                 <Header />
-            <Container sx={{minHeight: '100vh'}}>
-                <Box 
-                sx={{display:'flex', justifyContent:'center', flexGrow:1}}>
+            <Grid contianer spacing={1.5}>
+                <Grid item sx={{display:'flex',justifyContent:'center'}}>
                     <Typography
                         variant='h2' component='h2'>
                         Flag of the Moment
                     </Typography>
-                </Box>
-                <Container>
+                </Grid>
+                <Grid item>
                     <Card
-                    sx={{width:'full', height:'full'}}>
-                        <CardMedia
-                        component='img'
-                        src={flag}
-                        alt='Flag'
-                        sx={{}}
-                        />
+                    sx={{
+                        maxWidth:600,
+                        mx:'auto',
+                        boxShadow:3,
+                        borderRadius:2
+                    }}>
+                        <motion.div 
+                        key={flag}
+                        initial={{opacity:0}}
+                        animate={{opacity:1}}
+                        exit={{opacity:0}}
+                        transition={{duration:1}}
+                        >
+                            <CardMedia
+                            component='img'
+                            src={flag}
+                            alt='Flag'
+                            sx={{}}
+                            />
+                        </motion.div>
                     </Card>
-                <Box>
-                    <Typography
-                    variant='h3' component='h3'>
-                    {countryName}
+                </Grid>
+                <Grid container 
+                direction='column'
+                alignItems='center'>
+                    <InfoDisplay
+                    capital={countryInfo[0]} 
+                    population={countryInfo[1]}
+                    continent={countryInfo[2]}
+                    languages={countryInfo[3]} 
+                    name={countryName}/>
+                    <Grid item sx={{paddingY:4}}>
+                    <Typography variant='h2' component='h3'>
+                    New Flag in:
+                    <motion.div 
+                    initial={{opacity: 0, scale:0.8}}
+                    animate={{opacity:1, scale:1}}
+                    transition={{duration:1}}
+                    >
+                    {counter}
+                    </motion.div>
                     </Typography>
-                    <Typography>
-                       Capital: {countryInfo[0]}, Population: {countryInfo[1]}, Continent: {countryInfo[2]}, 
-                        Languages: {countryInfo[3]}. 
-                          Find more info on: <a href={wikiURL + countryName} target='_blank'>Wikipedia</a>
-                    </Typography>
-                    <Typography>
-                       New Flag in: {counter}
-                    </Typography>
-                </Box>
-                <Rating />
-                </Container>
-            </Container>
+                </Grid>
+                {/* <Rating /> */}
+                </Grid>
+            </Grid>
             </>
         )
     }
