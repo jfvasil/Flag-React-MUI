@@ -1,60 +1,30 @@
-import {motion} from 'framer-motion'
 import Header from '../components/Header'
-import  Rating  from '../components/Rating'
+import { useState, useEffect,useCallback } from 'react'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
+import {motion} from 'framer-motion'
 import InfoDisplay from '../components/InfoDisplay'
 import Typography from '@mui/material/Typography'
 import {Box, Container, Grid} from '@mui/material'
 import {Card, CardMedia, CardContent} from '@mui/material'
-import axios from 'axios'
-import { useEffect,useState, useCallback } from 'react'
-// import {styled} from 
 
 
 
 
-const Landing = () => {
+const FlagPage = () => {
 
-   
-
-    const [flag, setFlag] = useState(null)
-    const [countryName, setCountryName] = useState('')
-    const [countryInfo, setCountryInfo] = useState([])
-    const [countries,setCountries] = useState([] ) 
-   
-    const [counter, setCounter] = useState(0)
+const [flag, setFlag] = useState(null)
+const {countryCode} = useParams()
+const [countryName, setCountryName] = useState('')
+const [countryInfo, setCountryInfo] = useState([])
 
 
-
-
-    useEffect(() => {
-        
-        const countingDown = () => {                 
-        if(counter <= 0){
-            setCounter(10)
-        }
-        setTimeout(() => setCounter(counter - 1), 1000 )
-        }
-        countingDown()
-    })
-
-   
-   
     const handleFetch = useCallback(async () => {
+    
+    try{
+        const res = await axios.get(`https://restcountries.com/v3.1/alpha/${countryCode}`)
 
-
-        if(counter == 0){
-
-        try{
-        const res = await axios.get('https://restcountries.com/v3.1/all')
-        
-        const countriesArr = res.data.map(el => el.name.common)
-        setCountries(countriesArr)
-        const randomCountry = res.data[Math.floor(Math.random() * res.data.length)]
-        
-        console.log(res.data)
-        
-
-        const data = randomCountry
+        const data = res.data[0]
         const infoArray = [data.capital, data.population,data.continents, Object.values(data.languages).join(', ')]
 
         setFlag(data.flags.png)
@@ -63,17 +33,13 @@ const Landing = () => {
     }catch(err){
         console.error(err)
     }
-}
-    
-    },[counter])
+    },[])
 
     useEffect(() => {
         handleFetch()
-    },[counter])
-
-
-    
-const addCommas = (number) => {
+    },[])
+   
+    const addCommas = (number) => {
         if(!number){
             return null
         }
@@ -96,15 +62,14 @@ const addCommas = (number) => {
     }
         return (
             <>
-            <Header 
-            countries={countries}/>
+            {/* <Header /> */}
             <Grid contianer spacing={1.5}>
                 <Grid item sx={{display:'flex',justifyContent:'center'}}>
                     <Typography
                         variant='h2' component='h2'
                         sx={{textAlign:'center', color:'primary.main',
                         mb:3}}>
-                        Flag of the Moment
+                        {countryName}
                     </Typography>
                 </Grid>
                 <Grid item>
@@ -140,26 +105,16 @@ const addCommas = (number) => {
                     capital={countryInfo[0]} 
                     population={addCommas(countryInfo[1])}
                     continent={countryInfo[2]}
-                    languages={countryInfo[3]} 
-                    name={countryName}/>
-                    <Grid item sx={{paddingY:4}}>
-                    <Typography variant='h5' component='div'
-                    sx={{textAlign:'center', color:'secondary.main'}}>
-                    New Flag in:
-                    <motion.div 
-                    initial={{opacity: 0, scale:0.8}}
-                    animate={{opacity:1, scale:1}}
-                    transition={{duration:1}}
-                    >
-                    {counter}
-                    </motion.div>
-                    </Typography>
-                </Grid>
-                {/* <Rating /> */}
-                </Grid>
+                    languages={countryInfo[3]}
+                    name={countryName} 
+                    showName={false}
+                    />
+               </Grid>
             </Grid>
             </>
         )
-    }
 
-export default Landing
+  
+}
+
+export default FlagPage

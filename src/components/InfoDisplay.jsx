@@ -1,6 +1,6 @@
 import {Typography, Grid, Box} from '@mui/material'
 
-const InfoDisplay = ({capital,population,continent,languages,name}) => {
+const InfoDisplay = ({capital,population,continent,languages,name,showName = true}) => {
 
 
     const wikiURL = 'https://en.wikipedia.org/wiki/'
@@ -11,7 +11,8 @@ const InfoDisplay = ({capital,population,continent,languages,name}) => {
    spacing={1.5}
    direction='column'
    alignItems='center'>
-    <Grid item> {name} </Grid>
+    {showName && (
+    <Grid item> {name} </Grid>)}
     <Grid item>Capital: {capital} </Grid>
     <Grid item>Population: {population}</Grid>
     <Grid item>Continent: {continent}</Grid>
