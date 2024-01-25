@@ -19,7 +19,7 @@ const Landing = () => {
     const [flag, setFlag] = useState(null)
     const [countryName, setCountryName] = useState('')
     const [countryInfo, setCountryInfo] = useState([])
-    const [countries,setCountries] = useState([] ) 
+    const [countries,setCountries] = useState([]) 
    
     const [counter, setCounter] = useState(0)
 
@@ -47,11 +47,11 @@ const Landing = () => {
         try{
         const res = await axios.get('https://restcountries.com/v3.1/all')
         
-        const countriesArr = res.data.map(el => el.name.common)
-        setCountries(countriesArr)
+        // const countriesArr = res.data.map(el => el.name.common)
+        setCountries(res.data)
         const randomCountry = res.data[Math.floor(Math.random() * res.data.length)]
         
-        console.log(res.data)
+       
         
 
         const data = randomCountry
@@ -94,10 +94,12 @@ const addCommas = (number) => {
         }
         return arrWithCommas.reverse().join('')
     }
+
+    
         return (
             <>
             <Header 
-            countries={countries}/>
+            countries={countries || []}/>
             <Grid contianer spacing={1.5}>
                 <Grid item sx={{display:'flex',justifyContent:'center'}}>
                     <Typography

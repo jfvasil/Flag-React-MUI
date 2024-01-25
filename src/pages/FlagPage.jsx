@@ -17,6 +17,7 @@ const [flag, setFlag] = useState(null)
 const {countryCode} = useParams()
 const [countryName, setCountryName] = useState('')
 const [countryInfo, setCountryInfo] = useState([])
+const [countries, setCountries] = useState([])
 
 
     const handleFetch = useCallback(async () => {
@@ -27,6 +28,7 @@ const [countryInfo, setCountryInfo] = useState([])
         const data = res.data[0]
         const infoArray = [data.capital, data.population,data.continents, Object.values(data.languages).join(', ')]
 
+        setCountries(res.data)
         setFlag(data.flags.png)
         setCountryInfo( [...infoArray])
         setCountryName(data.name.common)
@@ -62,7 +64,7 @@ const [countryInfo, setCountryInfo] = useState([])
     }
         return (
             <>
-            {/* <Header /> */}
+            <Header countries={countries || []} />
             <Grid contianer spacing={1.5}>
                 <Grid item sx={{display:'flex',justifyContent:'center'}}>
                     <Typography

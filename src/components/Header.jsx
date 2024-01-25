@@ -10,6 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import{Autocomplete,TextField} from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import { useTheme } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
 
 // const Search = styled('div')(({ theme }) => ({
 //   position: 'relative',
@@ -55,6 +56,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchAppBar(countries) {
 
     const theme = useTheme()
+   
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -79,20 +81,22 @@ export default function SearchAppBar(countries) {
           <Autocomplete
       id="country-select-demo"
       sx={{ width: 300 }}
-      options={countries}
+      options={countries.countries}
       autoHighlight
       getOptionLabel={(option) => option.name.common}
       renderOption={(props, option) => (
-        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+        <Link to={`/flag/${option.cca2}`}>
+         <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
           <img
             loading="lazy"
             width="20"
             srcSet={`https://flagcdn.com/w40/${option.cca2.toLowerCase()}.png 2x`}
             src={`https://flagcdn.com/w20/${option.cca2.toLowerCase()}.png`}
-            alt=""
+            alt="flag"
           />
-          {option.name.common} ({option.cca2}) 
+          {option.name.common} {option.cca2}
         </Box>
+        </Link>
       )}
       renderInput={(params) => (
         <TextField
