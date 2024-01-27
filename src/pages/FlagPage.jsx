@@ -64,7 +64,7 @@ const [countries, setCountries] = useState([])
     }
         return (
             <>
-            <Header countries={countries || []} />
+            <Header  />
             <Grid contianer spacing={1.5}>
                 <Grid item sx={{display:'flex',justifyContent:'center'}}>
                     <Typography

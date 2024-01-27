@@ -9,8 +9,10 @@ import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import{Autocomplete,TextField} from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
+import axios from 'axios';
 import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 // const Search = styled('div')(({ theme }) => ({
 //   position: 'relative',
@@ -53,14 +55,48 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar(countries) {
+
+
+
+
+
+
+
+
+export default function SearchAppBar() {
 
     const theme = useTheme()
+    const [countries,setCountries] = useState([])
+
+
+    const handleFetch =  async () => {
+  
+      try{
+          const res = await axios.get('https://restcountries.com/v3.1/all')
+          
+          
+          setCountries(res.data)
+          console.log(countries)
+      }catch(err){
+          console.error(err)
+      }
+    }
+    
+    
+  useEffect(() => {
+    handleFetch()
+  },[])
+      
    
+
+
+
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
+         <Link to='/'>
           <IconButton
             size="large"
             edge="start"
@@ -70,6 +106,7 @@ export default function SearchAppBar(countries) {
           >
             <MenuIcon />
           </IconButton>
+          </Link>
           <Typography
             variant="h6"
             noWrap
@@ -78,10 +115,11 @@ export default function SearchAppBar(countries) {
           >
             Flags and Countries
           </Typography>
+          
           <Autocomplete
       id="country-select-demo"
       sx={{ width: 300 }}
-      options={countries.countries}
+      options={countries || []}
       autoHighlight
       getOptionLabel={(option) => option.name.common}
       renderOption={(props, option) => (
@@ -108,7 +146,7 @@ export default function SearchAppBar(countries) {
           }}
         />
       )}
-    />
+    /> 
           {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />

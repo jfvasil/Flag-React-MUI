@@ -19,7 +19,7 @@ const Landing = () => {
     const [flag, setFlag] = useState(null)
     const [countryName, setCountryName] = useState('')
     const [countryInfo, setCountryInfo] = useState([])
-    const [countries,setCountries] = useState([]) 
+  
    
     const [counter, setCounter] = useState(0)
 
@@ -44,27 +44,26 @@ const Landing = () => {
 
         if(counter == 0){
 
-        try{
-        const res = await axios.get('https://restcountries.com/v3.1/all')
+            try{
+            const res = await axios.get('https://restcountries.com/v3.1/all')
+            
+           
+            
+            const randomCountry = res.data[Math.floor(Math.random() * res.data.length)]
+            
         
-        // const countriesArr = res.data.map(el => el.name.common)
-        setCountries(res.data)
-        const randomCountry = res.data[Math.floor(Math.random() * res.data.length)]
-        
-       
-        
+            
 
-        const data = randomCountry
-        const infoArray = [data.capital, data.population,data.continents, Object.values(data.languages).join(', ')]
+            const data = randomCountry
+            const infoArray = [data.capital, data.population,data.continents, Object.values(data.languages).join(', ')]
 
-        setFlag(data.flags.png)
-        setCountryInfo( [...infoArray])
-        setCountryName(data.name.common)
-    }catch(err){
-        console.error(err)
+            setFlag(data.flags.png)
+            setCountryInfo( [...infoArray])
+            setCountryName(data.name.common)
+        }catch(err){
+            console.error(err)
+        }
     }
-}
-    
     },[counter])
 
     useEffect(() => {
@@ -98,8 +97,7 @@ const addCommas = (number) => {
     
         return (
             <>
-            <Header 
-            countries={countries || []}/>
+            <Header />
             <Grid contianer spacing={1.5}>
                 <Grid item sx={{display:'flex',justifyContent:'center'}}>
                     <Typography
