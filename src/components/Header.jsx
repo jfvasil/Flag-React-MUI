@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import{Autocomplete,TextField} from '@mui/material'
+import FadeMenu from './FadeMenu';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 import { useTheme } from '@mui/material/styles';
@@ -68,6 +69,16 @@ export default function SearchAppBar() {
     const theme = useTheme()
     const [countries,setCountries] = useState([])
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    }
+    
+
 
     const handleFetch =  async () => {
   
@@ -96,17 +107,23 @@ export default function SearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-         <Link to='/'>
           <IconButton
+            id = 'fade-button'
+            aria-controls={open ? 'fade-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
             size="large"
             edge="start"
             color="inherit"
-            aria-label="open drawer"
             sx={{ mr: 2 }}
           >
             <MenuIcon />
           </IconButton>
-          </Link>
+          <FadeMenu 
+          handleClose={handleClose}
+          anchorEl={anchorEl}
+          open={open} />
           <Typography
             variant="h6"
             noWrap
