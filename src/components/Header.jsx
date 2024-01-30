@@ -140,7 +140,8 @@ export default function SearchAppBar() {
       autoHighlight
       getOptionLabel={(option) => option.name.common}
       renderOption={(props, option) => (
-        <Link to={`/flag/${option.cca2}`}>
+        <Link to={`/flag/${option.cca2}`}
+        style={{textDecoration:'none'}}>
          <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
           <img
             loading="lazy"

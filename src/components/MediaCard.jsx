@@ -8,20 +8,16 @@ import Typography from '@mui/material/Typography';
 
 export default function MediaCard({flag, countryName}) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width:'full' }}>
       <CardMedia
-        sx={{ height: 140 }}
+        sx={{ maxHeight: 140, objectFit:'cover' }}
         component={'img'}
         src={flag}
         title={`flag of ${countryName}`}
       />
-      <CardContent>
+      <CardContent sx={{height:60}}>
         <Typography gutterBottom variant="h5" component="div">
           {countryName}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
         </Typography>
       </CardContent>
       <CardActions>
