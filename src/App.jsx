@@ -13,8 +13,8 @@ function App() {
     <Route path='/' element={<Layout />}>
 
     <Route path='/' element={<Landing />}></Route>
-    <Route path='/flag/:countryCode' Component={FlagPage}></Route>
-    <Route path='/flag/all-flags' Component={AllFlags}></Route>
+    <Route path='/flag/:countryCode' element={<FlagPage />}></Route>
+    <Route path='/flag/all-flags' element={<AllFlags />}></Route>
 
 
     </Route>

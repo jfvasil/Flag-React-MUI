@@ -1,6 +1,6 @@
 import Header from '../components/Header'
 import { useState, useEffect,useCallback } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams} from 'react-router-dom'
 import axios from 'axios'
 import {motion} from 'framer-motion'
 import InfoDisplay from '../components/InfoDisplay'
@@ -12,6 +12,7 @@ import {Card, CardMedia, CardContent} from '@mui/material'
 
 
 const FlagPage = () => {
+
 
 const [flag, setFlag] = useState(null)
 const {countryCode} = useParams()
@@ -35,11 +36,11 @@ const [countries, setCountries] = useState([])
     }catch(err){
         console.error(err)
     }
-    },[])
+    },[countryCode])
 
     useEffect(() => {
         handleFetch()
-    },[])
+    },[countryCode])
    
     const addCommas = (number) => {
         if(!number){

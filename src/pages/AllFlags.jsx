@@ -1,8 +1,8 @@
-import {Grid, CircularProgress,Box} from '@mui/material'
+import {Grid, CircularProgress,Box,FormControl,InputLabel,Select,MenuItem} from '@mui/material'
 import MediaCard from '../components/MediaCard'
 import Header from '../components/Header'
 import axios from 'axios'
-import { useState,useCallback,useEffect } from 'react'
+import { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const AllFlags = () => {
@@ -56,36 +56,43 @@ const filteredCountries = countries.filter(country =>
     <>
     <Header />
     {isLoading ? (
-        <Box sx={{ display: 'flex', flexDirection:'column', 
+        <Box sx={{display: 'flex', flexDirection:'column', 
         justifyContent:'center', alignItems:'center', 
-        width:'full', height:'full'}}>
-        <CircularProgress />
+       height:'100vh'}}>
+        <CircularProgress size={110} />
       </Box>
     ) : (
     <Grid container 
     spacing={2} sx={{padding: 2}}>
-<Box sx={{ my: 2, display: 'flex', justifyContent: 'center', gap: 2 }}>
-  <select
+<Box sx={{ my: 4, display: 'flex', justifyContent: 'center', gap: 4 }}>
+  <FormControl variant='outlined' sx={{minWidth:120}}>
+  <InputLabel>Continent</InputLabel>
+  <Select
+    label='Continent'
     value={filterContinent}
     onChange={(e) => setFilterContinent(e.target.value)}
-    aria-label="Filter by Continent"
+    displayEmpty
   >
-    <option value="">All Continents</option>
-    <option value="Africa">Africa</option>
-    <option value="Americas">Americas</option>
-    <option value="Asia">Asia</option>
-    <option value="Europe">Europe</option>
-    <option value="Oceania">Oceania</option>
-  </select>
-
-  <select
+    <MenuItem value="">All Continents</MenuItem>
+    <MenuItem value="Africa">Africa</MenuItem>
+    <MenuItem value="Americas">Americas</MenuItem>
+    <MenuItem value="Asia">Asia</MenuItem>
+    <MenuItem value="Europe">Europe</MenuItem>
+    <MenuItem value="Oceania">Oceania</MenuItem>
+  </Select>
+    </FormControl>
+  <FormControl variant='outlined' sx={{minWidth:120}}>
+  <InputLabel>Sort Order</InputLabel>
+  <Select
+  lable='Sort Order'
     value={sortOrder}
     onChange={(e) => setSortOrder(e.target.value)}
-    aria-label="Sort Order"
+    
   >
-    <option value="asc">Alphabetical</option>
-    <option value="desc">Reverse Alphabetical</option>
-  </select>
+    <MenuItem value="asc">Alphabetical</MenuItem>
+    <MenuItem value="desc">Reverse Alphabetical</MenuItem>
+  </Select>
+</FormControl>
 </Box>    {sortedCountries.map(country => (
         <Grid item 
          xs={12} sm={6} md={4} lg={3} xl={2}

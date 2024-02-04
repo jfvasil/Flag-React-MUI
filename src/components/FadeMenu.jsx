@@ -7,6 +7,10 @@ import { Link } from 'react-router-dom';
 
 export default function FadeMenu({handleClose,open,anchorEl}) {
   
+const linkStyle = {
+  color: '#1E293B',
+  textDecoration: 'none'
+}
 
   return (
     <div>
@@ -20,8 +24,12 @@ export default function FadeMenu({handleClose,open,anchorEl}) {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <Link to='/'><MenuItem onClick={handleClose}>Flag of the Moment</MenuItem></Link>
-       <Link to='/flag/all-flags'><MenuItem onClick={handleClose}>All Flags</MenuItem></Link>
+        <Link to='/' style={linkStyle}>
+          <MenuItem onClick={handleClose}>Flag of the Moment</MenuItem>
+          </Link>
+       <Link to='/flag/all-flags' style={linkStyle}>
+        <MenuItem onClick={handleClose}>All Flags</MenuItem>
+        </Link>
       </Menu>
     </div>
   );

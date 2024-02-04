@@ -12,7 +12,7 @@ import FadeMenu from './FadeMenu';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 import { useTheme } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 // const Search = styled('div')(({ theme }) => ({
@@ -63,9 +63,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 
-
 export default function SearchAppBar() {
 
+    const navigate = useNavigate()
     const theme = useTheme()
     const [countries,setCountries] = useState([])
 
@@ -139,9 +139,8 @@ export default function SearchAppBar() {
       options={countries || []}
       autoHighlight
       getOptionLabel={(option) => option.name.common}
+      onChange={(event, value) => value && navigate(`/flag/${value.cca2}`)}
       renderOption={(props, option) => (
-        <Link to={`/flag/${option.cca2}`}
-        style={{textDecoration:'none'}}>
          <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
           <img
             loading="lazy"
@@ -152,7 +151,7 @@ export default function SearchAppBar() {
           />
           {option.name.common} {option.cca2}
         </Box>
-        </Link>
+        
       )}
       renderInput={(params) => (
         <TextField
