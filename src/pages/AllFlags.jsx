@@ -9,6 +9,8 @@ const AllFlags = () => {
 
    const [countries, setCountries] = useState([])
    const [isLoading, setIsLoading] = useState(false)
+   const [filterContinent, setFilterContinent] = useState('')
+   const [sortOrder, setSortOrder] = useState('asc')
 
     const handleFetch = async () => {
         setIsLoading(true)
@@ -36,6 +38,20 @@ const AllFlags = () => {
         handleFetch()
     },[])
 
+   
+const filteredCountries = countries.filter(country => 
+    filterContinent ? country.region === filterContinent : true
+  )
+  
+  const sortedCountries = filteredCountries.sort((a, b) => {
+    if (sortOrder === 'asc') {
+      return a.name.common.localeCompare(b.name.common);
+    } else {
+      return b.name.common.localeCompare(a.name.common);
+    }
+  })
+  
+
   return (
     <>
     <Header />
@@ -48,7 +64,29 @@ const AllFlags = () => {
     ) : (
     <Grid container 
     spacing={2} sx={{padding: 2}}>
-    {countries.map(country => (
+<Box sx={{ my: 2, display: 'flex', justifyContent: 'center', gap: 2 }}>
+  <select
+    value={filterContinent}
+    onChange={(e) => setFilterContinent(e.target.value)}
+    aria-label="Filter by Continent"
+  >
+    <option value="">All Continents</option>
+    <option value="Africa">Africa</option>
+    <option value="Americas">Americas</option>
+    <option value="Asia">Asia</option>
+    <option value="Europe">Europe</option>
+    <option value="Oceania">Oceania</option>
+  </select>
+
+  <select
+    value={sortOrder}
+    onChange={(e) => setSortOrder(e.target.value)}
+    aria-label="Sort Order"
+  >
+    <option value="asc">Alphabetical</option>
+    <option value="desc">Reverse Alphabetical</option>
+  </select>
+</Box>    {sortedCountries.map(country => (
         <Grid item 
          xs={12} sm={6} md={4} lg={3} xl={2}
         key={country.cca2}>
