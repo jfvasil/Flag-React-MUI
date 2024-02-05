@@ -1,8 +1,9 @@
-import {Grid, CircularProgress,Box,FormControl,InputLabel,Select,MenuItem} from '@mui/material'
+import {Grid, CircularProgress,Box,FormControl,InputLabel,Select,MenuItem,Container} from '@mui/material'
 import MediaCard from '../components/MediaCard'
 import Header from '../components/Header'
 import axios from 'axios'
 import { useState,useEffect } from 'react'
+import {motion} from 'framer-motion'
 import { Link } from 'react-router-dom'
 
 const AllFlags = () => {
@@ -62,26 +63,25 @@ const filteredCountries = countries.filter(country =>
         <CircularProgress size={110} />
       </Box>
     ) : (
-    <Grid container 
-    spacing={2} sx={{padding: 2}}>
-<Box sx={{ my: 4, display: 'flex', justifyContent: 'center', gap: 4 }}>
-  <FormControl variant='outlined' sx={{minWidth:120}}>
-  <InputLabel>Continent</InputLabel>
-  <Select
-    label='Continent'
-    value={filterContinent}
-    onChange={(e) => setFilterContinent(e.target.value)}
-    displayEmpty
-  >
-    <MenuItem value="">All Continents</MenuItem>
-    <MenuItem value="Africa">Africa</MenuItem>
-    <MenuItem value="Americas">Americas</MenuItem>
-    <MenuItem value="Asia">Asia</MenuItem>
-    <MenuItem value="Europe">Europe</MenuItem>
-    <MenuItem value="Oceania">Oceania</MenuItem>
-  </Select>
+      <>
+  <Container>
+  <Box sx={{ my: 4, display: 'flex', justifyContent: 'center', gap: 6 }}>
+    <FormControl variant='outlined' sx={{minWidth:300,color:'primary.main'}}>
+      <Select
+        label='Continent'
+        value={filterContinent}
+        onChange={(e) => setFilterContinent(e.target.value)}
+        displayEmpty
+      >
+        <MenuItem value="">All Continents</MenuItem>
+        <MenuItem value="Africa">Africa</MenuItem>
+        <MenuItem value="Americas">Americas</MenuItem>
+        <MenuItem value="Asia">Asia</MenuItem>
+        <MenuItem value="Europe">Europe</MenuItem>
+        <MenuItem value="Oceania">Oceania</MenuItem>
+      </Select>
     </FormControl>
-  <FormControl variant='outlined' sx={{minWidth:120}}>
+  <FormControl variant='outlined' sx={{minWidth:300}}>
   <InputLabel>Sort Order</InputLabel>
   <Select
   lable='Sort Order'
@@ -93,21 +93,29 @@ const filteredCountries = countries.filter(country =>
     <MenuItem value="desc">Reverse Alphabetical</MenuItem>
   </Select>
 </FormControl>
-</Box>    {sortedCountries.map(country => (
+</Box> 
+  </Container>
+    <Grid container 
+    spacing={2} sx={{padding: 2}}>
+   {sortedCountries.map(country => (
         <Grid item 
          xs={12} sm={6} md={4} lg={3} xl={2}
         key={country.cca2}>
             <Link to={`/flag/${country.cca2}`}
             style={{textDecoration: 'none'}}>
+            <motion.div 
+            whileHover={{scale:1.05, transition: {duration:0.3} }}>
             <MediaCard
             flag={country.flags.png}
             countryName={country.name.common}
             />
+          </motion.div>
             </Link>
         </Grid>
 
     ))}
     </Grid>
+    </>
     )}
     </>
   )

@@ -143,8 +143,8 @@ const addCommas = (number) => {
                     languages={countryInfo[3]} 
                     name={countryName}/>
                     <Grid item sx={{paddingY:4}}>
-                    <Typography variant='h5' component='div'
-                    sx={{textAlign:'center', color:'secondary.main'}}>
+                    <Typography variant='h2' component='div'
+                    sx={{textAlign:'center', color:'secondary.main',lineHeight:1.6}}>
                     New Flag in:
                     <motion.div 
                     initial={{opacity: 0, scale:0.8}}

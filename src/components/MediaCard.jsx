@@ -21,8 +21,7 @@ export default function MediaCard({flag, countryName}) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+        <Button size="small">Click to see more!</Button>
       </CardActions>
     </Card>
   );

@@ -70,7 +70,7 @@ const [countries, setCountries] = useState([])
                 <Grid item sx={{display:'flex',justifyContent:'center'}}>
                     <Typography
                         variant='h2' component='h2'
-                        sx={{textAlign:'center', color:'primary.main',
+                        sx={{textAlign:'center', color:'primary.dark',
                         mb:3}}>
                         {countryName}
                     </Typography>
