@@ -66,7 +66,7 @@ const filteredCountries = countries.filter(country =>
       <>
   <Container>
   <Box sx={{ my: 4, display: 'flex', justifyContent: 'center', gap: 6 }}>
-    <FormControl variant='outlined' sx={{minWidth:300,color:'primary.main'}}>
+    <FormControl variant='outlined' sx={{minWidth:'50%',color:'primary.main',paddingLeft:1 + 'rem'}}>
       <Select
         label='Continent'
         value={filterContinent}
@@ -81,7 +81,7 @@ const filteredCountries = countries.filter(country =>
         <MenuItem value="Oceania">Oceania</MenuItem>
       </Select>
     </FormControl>
-  <FormControl variant='outlined' sx={{minWidth:300}}>
+  <FormControl variant='outlined' sx={{minWidth:'50%',paddingRight:1 + 'rem'}}>
   <InputLabel>Sort Order</InputLabel>
   <Select
   lable='Sort Order'
