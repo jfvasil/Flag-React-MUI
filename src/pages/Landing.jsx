@@ -45,7 +45,7 @@ const Landing = () => {
         if(counter == 0){
 
             try{
-            const res = await axios.get('https://restcountries.com/v3.1/all')
+            const res = await axios.get('https://restcountries.com/v3.1/all?fields=name,flags,population,continent,languages,capital,cca2')
             
            
             

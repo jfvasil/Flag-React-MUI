@@ -70,7 +70,7 @@ export default function SearchAppBar() {
     const handleFetch =  async () => {
   
       try{
-          const res = await axios.get('https://restcountries.com/v3.1/all')
+          const res = await axios.get('https://restcountries.com/v3.1/all?fields=name,flags,population,continent,languages,capital,cca2,region')
           
           
           setCountries(res.data)
