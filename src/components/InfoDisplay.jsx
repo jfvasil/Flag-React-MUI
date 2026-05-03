@@ -1,5 +1,6 @@
-import {Typography, Grid, Box} from '@mui/material'
+import {Typography, Grid, Box, Button} from '@mui/material'
 import {styled} from '@mui/material/styles'
+import { useState } from 'react'
 
 const CustomSpan = styled('span')(({theme}) => ({
   color:theme.palette.secondary.dark,
@@ -8,6 +9,35 @@ const CustomSpan = styled('span')(({theme}) => ({
 
 const InfoDisplay = ({capital,population,continent,languages,name,showName = true}) => {
 
+const [aiOverview, setAiOverview] = useState("");
+const [loadingOverview, setLoadingOverview] = useState(false);
+
+async function getAiOverview(country) {
+  setLoadingOverview(true);
+  setAiOverview("");
+
+  try {
+    const res = await fetch("/.netlify/functions/countryOverview", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ country }),
+    });
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to generate overview");
+    }
+
+    setAiOverview(data.overview)
+  } catch (error) {
+    setAiOverview("Sorry, I could not generate an overview right now.");
+  } finally {
+    setLoadingOverview(false)
+  }
+}
 
     const wikiURL = 'https://en.wikipedia.org/wiki/'
 
@@ -39,6 +69,18 @@ const InfoDisplay = ({capital,population,continent,languages,name,showName = tru
     sx={{ color: 'secondary.main'}}
     > 
     Wikipedia</a></Grid>
+    <Grid item>
+      <Button size="large" onClick={() => getAiOverview(name)}>
+        Ai Overview!
+        </Button>
+        {loadingOverview && 
+        <CustomSpan>Generating Ai Overview....</CustomSpan> }
+        {aiOverview && (
+          <Grid item>
+            {aiOverview}
+          </Grid>
+        )}
+    </Grid>
    </Grid>
    </Typography>
   )

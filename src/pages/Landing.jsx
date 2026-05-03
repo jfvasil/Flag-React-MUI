@@ -30,7 +30,7 @@ const Landing = () => {
         
         const countingDown = () => {                 
         if(counter <= 0){
-            setCounter(10)
+            setCounter(20)
         }
         setTimeout(() => setCounter(counter - 1), 1000 )
         }
