@@ -1,6 +1,6 @@
 import {Typography, Grid, Box, Button} from '@mui/material'
 import {styled} from '@mui/material/styles'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const CustomSpan = styled('span')(({theme}) => ({
   color:theme.palette.secondary.dark,
@@ -12,9 +12,18 @@ const InfoDisplay = ({capital,population,continent,languages,name,showName = tru
 const [aiOverview, setAiOverview] = useState("");
 const [loadingOverview, setLoadingOverview] = useState(false);
 
-async function getAiOverview(country) {
-  setLoadingOverview(true);
+useEffect(() => {
   setAiOverview("");
+  setLoadingOverview(false);
+
+  
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}, [name])
+
+async function getAiOverview(country) {
+  setAiOverview("");
+  setLoadingOverview(true);
+  
 
   try {
     const res = await fetch("/.netlify/functions/countryOverview", {
@@ -63,25 +72,40 @@ async function getAiOverview(country) {
       <CustomSpan sx={{display:'inline-flex', flexWrap:'wrap'}}>Language(s)</CustomSpan>:
        {languages}</Grid>
     <Grid item>
-    <CustomSpan>Find more info on:</CustomSpan>    
+    <CustomSpan>Find more info on: </CustomSpan>    
     <a href={wikiURL + name} 
     target='_blank'
     sx={{ color: 'secondary.main'}}
     > 
-    Wikipedia</a></Grid>
-    <Grid item>
-      <Button size="large" onClick={() => getAiOverview(name)}>
-        Ai Overview!
-        </Button>
-        {loadingOverview && 
-        <CustomSpan>Generating Ai Overview....</CustomSpan> }
-        {aiOverview && (
-          <Grid item>
-            {aiOverview}
-          </Grid>
-        )}
+    Wikipedia</a>
     </Grid>
-   </Grid>
+    <Grid item>
+      <Button variant="contained" size="large" 
+      disabled={loadingOverview}
+      onClick={() => getAiOverview(name)} >
+        Click for an Ai Overview!  
+        </Button>
+    </Grid>
+        {loadingOverview && (
+        <Grid item>
+        <CustomSpan>  Generating Ai Overview....</CustomSpan> 
+        </Grid>
+        )}
+        {aiOverview && (
+        <Grid item sx={{ maxWidth: "600px", textAlign: "center" }}>
+          <Typography
+            variant="body2"
+            sx={{
+              fontSize: "0.9em",
+              lineHeight: 1.5,
+              color: "secondary.main",
+            }}
+          >
+            {aiOverview}
+          </Typography>
+        </Grid>
+      )}
+    </Grid>
    </Typography>
   )
 }

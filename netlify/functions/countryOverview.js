@@ -21,9 +21,9 @@ export default async (req) => {
 
         const response = await client.responses.create({
 
-            model: "gpt-5.5 mini",
+            model: "gpt-5-mini",
             input: `Write an informative  overwiew of this country of my geography app.
-                    The overview should be 300 words or less.
+                    The overview should be 200 words or less.
             
                     Pleae include information about the demographics, cusisne, languages, and an interesting factoid.
                     
